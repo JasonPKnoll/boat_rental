@@ -31,4 +31,24 @@ describe Dock do
                                     @sup_1 => @eugene
                                     })
   end
+
+  it 'charges by the hour' do
+
+    @dock.rent(@kayak_1, @patrick)
+    @dock.rent(@kayak_2, @patrick)
+    @dock.rent(@sup_1, @eugene)
+    @kayak_1.add_hour
+    @kayak_1.add_hour
+
+    expect(@dock.charge(@kayak_1)).to eq({ :amount => 40, :card_number => @patrick.credit_card_number})
+
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+
+    expect(@dock.charge(@sup_1)).to eq({:amount => 45, :card_number => @eugene.credit_card_number})
+
+  end
 end
